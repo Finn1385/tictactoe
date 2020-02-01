@@ -27,10 +27,22 @@ def isWinner(xoro, board):
     return False
 
 def playerMove(pos, board):
-    pass
+    board[pos] = "X"
+
+def xMove(pos, board):
+    board[pos] = "X"
+
+def oMove(pos, board):
+    board[pos] = "O"
 
 def compMove(pos, board):
     pass
+
+def isEmpty(pos, board):
+    return board[pos] == " "
+
+def isBoardEmpty(board):
+    return " " in board[1:]
 
 def start():
     print("Welcome to the Tic-Tac-Toe game!")
@@ -38,26 +50,69 @@ def start():
     print("(1) - Player vs Computer")
     print("(2) - Player vs Player")
     game = input(">>> ")
-    print(type(game))
-    while game != "1" or game != "2":
+    while game != "1" and game != "2":
         print("Incorrect input. Please select mode 1 or 2:")
         print("(1) - Player vs Computer")
         print("(2) - Player vs Player")
         game = input(">>> ")
 
     if(game == "1"): #TODO AI
-        pass
+        startPvC()
     if(game == "2"):
-        print("Starting game Player vs Player!")
-        print("Good luck and have fun!")
-        print("")
-        print("Player X It's your turn! (Select position 1-9 starting from top left)")
-        printBoard(board)
-        move = input(">>> ")
-        try:
-            move = int(move)
-        except:
-            print("Please select position from 1-9 starting from top left")
+        startPvP()
+
+
+def startPvP():
+    print("Starting game Player vs Player!")
+    print("Good luck and have fun!")
+    print("")
+    printBoard(board)
+    while True:
+        print("Player X its your turn! Please select position in range 1-9")
+        move = int(input(">>> "))
+        while move<1 or move > 9:
+            printBoard(board)
+            print("Please select position in range 1-9")
+            move = int(input(">>> "))
+        while not isEmpty(move, board):
+            printBoard(board)
+            print("This position is already occupied. Try again.")
+            move = int(input(">>> "))
+        else:
+            xMove(move, board)
+            printBoard(board)
+            if(isWinner("X", board)):
+                print("Player X won the game!")
+                break
+            if(not isBoardEmpty(board)):
+                print("Draw! Game over!")
+                break
+
+        print("Player O its your turn! Please select position in range 1-9")
+        move = int(input(">>> "))
+        while move<1 or move > 9:
+            printBoard(board)
+            print("Please select position in range 1-9")
+            move = int(input(">>> "))
+        while not isEmpty(move, board):
+            printBoard(board)
+            print("This position is already occupied. Try again.")
+            move = int(input(">>> "))
+        else:
+            oMove(move, board)
+            printBoard(board)
+            if(isWinner("O", board)):
+                print("Player O won the game!")
+                break
+            if(not isBoardEmpty(board)):
+                print("Draw! Game over!")
+                break
+
+
+
+def startPvC():
+    pass
+            
 
 
 start()
